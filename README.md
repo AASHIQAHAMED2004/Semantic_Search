@@ -99,13 +99,12 @@ semantic-search-engine/
 │   ├── faiss_meta.pkl
 │   └── faiss_emb.npy
 │
-└── src/
-    ├── clean_dataset.py
-    ├── index_builder.py
-    ├── app.py
-    ├── trail.py
-    └── evaluate.py
-
+│── src/
+│   ├── clean_dataset.py
+│   ├── index_builder.py
+│   ├── app.py
+│   ├── trail.py
+│   └── evaluate.py
 │
 └── .github/workflows/
     └── build-index.yml
