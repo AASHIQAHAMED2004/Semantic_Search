@@ -1,6 +1,20 @@
-sentence-transformers
-faiss-cpu
-streamlit
+# Core
 pandas
 numpy
 tqdm
+matplotlib
+scikit-learn
+
+# NLP + Embeddings
+sentence-transformers
+rank_bm25
+
+# Vector Search
+faiss-cpu
+
+# App UI
+streamlit
+
+# Optional but useful
+# requests
+# faiss-gpu
