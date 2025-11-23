@@ -1,0 +1,59 @@
+name: Build Semantic Search Index
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Prepare Data Directory
+        run: mkdir -p data models
+
+      - name: Run Data Cleaning
+        run: |
+          python src/clean_dataset.py
+
+      - name: Build FAISS Index
+        run: |
+          python src/index_builder.py \
+            --csv data/amazon_clean.csv \
+            --out_prefix models/faiss \
+            --index_type hnsw \
+            --max_rows 5000
+
+      - name: Run Evaluation
+        run: |
+          python src/evaluate.py \
+            --index models/faiss.index \
+            --meta models/faiss_meta.pkl \
+            --emb models/faiss_emb.npy \
+            --viz_out models/embeddings_viz.png
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: search-index-artifacts
+          path: |
+            models/*.index
+            models/*.pkl
+            models/*.npy
+            models/*.png
